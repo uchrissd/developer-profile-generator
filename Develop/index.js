@@ -3,6 +3,7 @@ const axios = require("axios");
 const inquirer = require("inquirer");
 const PDFDocument = require("pdfkit");
 const request = require("request");
+const gHTML = require("generate-html");
 
 //Inquirer function
 inquirer
@@ -63,8 +64,13 @@ displayItemsPDF = async (doc, dataObject) => {
       valign: "top"
     })
     .fontSize(25)
-    .text(dataObject.name, 100, 100)
-    .text(dataObject.userUrl, 100, 100);
+    .text(dataObject.name, 250, 250, { align: "left" })
+    // .text(dataObject.userUrl, 100, 100)
+    .text("GitHub Profile", 300, 300, {
+      align: "left"
+    })
+    .underline(300, 300, 160, 27, { color: "#0000FF", align: "lleft" })
+    .link(100, 100, 160, 27, dataObject.userUrl);
 
   doc.end();
 };
