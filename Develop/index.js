@@ -22,6 +22,11 @@ inquirer
     const queryUrl = `https://api.github.com/users/${username}`;
     axios.get(queryUrl).then(res => {
       getData(res);
+      fs.writeFile(filename, data, function(err, data) {
+        if (err)
+        return err
+      }
+      resolve(data)
     });
     console.log("you did it");
   });
@@ -101,3 +106,5 @@ async function getStars(username) {
     console.log(err);
   }
 }
+
+
