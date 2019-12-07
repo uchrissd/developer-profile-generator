@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const inquirer = require("inquirer");
-const PDFDocument = require("pdfkit");
+const PDFDocument = require("html-pdf");
 const request = require("request");
 const gHTML = require("generate-html");
 
@@ -25,16 +25,7 @@ inquirer
     });
     console.log("you did it");
   });
-//Function generates the PDF document
-pdfGen = async dataObject => {
-  const doc = new PDFDocument();
-  doc.pipe(fs.createWriteStream("./tmp3.pdf")); // write to PDF
 
-  displayItemsPDF(doc, dataObject);
-
-  // add stuff to PDF here using methods described below...
-  // finalize the PDF and end the stream
-};
 getData = res => {
   // Set variables in an object here
   const dataObject = {
@@ -49,82 +40,64 @@ getData = res => {
     userStarredRepos: res.data.starred_url,
     userFollowing: res.data.following
   };
-
-  pdfGen(dataObject);
+  return dataObject;
 };
 
-displayItemsPDF = async (doc, dataObject) => {
-  const url = dataObject.userPic;
-  console.log(url);
-  let uri = await getB64ImageURI(url);
-  doc
-    .image(uri, {
-      fit: [150, 150],
-      align: "center",
-      valign: "top"
-    })
-    .fontSize(25)
-    .text(dataObject.name, 250, 250, { align: "left" })
-    // .text(dataObject.userUrl, 100, 100)
-    .text("GitHub Profile", 300, 300, {
-      align: "left"
-    })
-    .underline(300, 300, 160, 27, { color: "#0000FF", align: "lleft" })
-    .link(100, 100, 160, 27, dataObject.userUrl);
+function profilePhotoHead(res) {
+  return `
+  <div class = "wrapper">>
+      <div class = "row">
+      <div class = "photo-header col">
+          <img src = ${res.data.avatar_url}, alt="self-photo">
+          <h1> My name is ${res.data.name}. </h1>
+          <h3> Currently ${res.data.company}.</h3>
+          <div class = "links-nav">
+              <div class = "nav-link"> <a href="https://www.google.com/maps/place/${res.data.location}">${res.data.location}</a></div>
+              <div class = "nav-link"> <a href=${res.data.html_url}>GitHub</a></div>
+              <div class = "nav-link"> <a href=${res.data.blog}>Blog</a></div>
+          </div>
+      </div>
+      </div>
+  `;
+}
 
-  doc.end();
-};
-
-// Get image function
-getB64ImageURI = url => {
-  return new Promise((resolve, reject) => {
-    request({ url, encoding: null }, (error, response, body) => {
-      if (error || response.statusCode != 200) {
-        reject(error);
-      }
-      const img = Buffer.from(body);
-      const contentType = response.headers["content-type"];
-      resolve("data:" + contentType + ";base64," + img.toString("base64"));
+function getStats(res) {
+  return `
+  <main>
+  <div class = container>
+      <h3 class="col">${res.data.bio}</h3>
+      <div class = "row">
+          <div class = "col card">
+              <h3>Public Repositories</h3>
+              <h4>${res.data.public_repos}</h4>
+          </div>
+          <div class = "col card">
+              <h3>Followers</h3>
+              <h4>${res.data.followers}</h4>
+          </div>
+      </div>
+      <div class = "row">
+          <div class = "col card">
+              <h3>Git Hub Stars</h3>
+              <h4>0</h4>
+          </div>
+          <div class = "col card">
+              <h3>Following</h3>
+              <h4>${res.data.following}</h4>
+          </div>
+      </div>
+  </div>
+  </main>
+  </div>
+  </body>  `;
+}
+async function getStars(username) {
+  try {
+    const starUrl = `https://api.github.com/users/${username}/starred?per_page=100`;
+    await axios.get(starUrl).then(function(res) {
+      console.log(res.data.length);
     });
-  });
-};
-
-// getUserUrl = dataObject => {
-//   const userUrl = dataObject.userUrl;
-//   console.log(userUrl);
-// };
-
-// getLocation = dataObject => {
-//   const location = dataObject.userLocation;
-//   console.log(location);
-// };
-
-// getBlog = dataObject => {
-//   const blog = dataObject.userBlog;
-//   console.log(blog);
-// };
-
-// getBio = dataObject => {
-//   const bio = dataObject.userBio;
-//   console.log(bio);
-// };
-
-// getRepos = dataObject => {
-//   const repos = dataObject.userRepos;
-//   console.log(repos);
-// };
-
-// getFollowers = dataObject => {
-//   const followers = dataObject.userFollowers;
-//   console.log(followers);
-// };
-
-// getStarredRepos = dataObject => {
-//   const starredRepos = dataObject.userStarredRepos;
-//   console.log(starredRepos);
-// };
-
-// getFollowing = dataObject => {
-//   const following = dataObject.userFollowing;
-//   console.log(following);
-// };
+  } catch (err) {
+    console.log(err);
+  }
+}
