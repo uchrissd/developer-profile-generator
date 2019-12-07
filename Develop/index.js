@@ -3,7 +3,7 @@ const axios = require("axios");
 const inquirer = require("inquirer");
 const PDFDocument = require("html-pdf");
 const request = require("request");
-const gHTML = require("generate-html");
+const genhtml = require("./generateHTML.js");
 
 //Inquirer function
 inquirer
@@ -14,39 +14,44 @@ inquirer
     },
     {
       message: "What is your favorite color:",
-      name: "favoriteColor"
+      name: "color"
     }
   ])
   //Axios api call function
-  .then(({ username }) => {
+  .then(answer => {
+    console.log(answer);
+    var html = genhtml.generateHTML(answer);
+    var username = answer.username;
     const queryUrl = `https://api.github.com/users/${username}`;
     axios.get(queryUrl).then(res => {
-      getData(res);
-      fs.writeFile(filename, data, function(err, data) {
-        if (err)
-        return err
-      }
-      resolve(data)
+      let photo = profilePhotoHead(res);
+      let stats = getStats(res);
+      html = html + photo + stats;
+      fs.writeFile("developerHTML.html", html, function(err, data) {
+        if (err) return err;
+        return data;
+      });
+
+      console.log("you did it");
     });
-    console.log("you did it");
   });
 
-getData = res => {
-  // Set variables in an object here
-  const dataObject = {
-    name: res.data.name,
-    userPic: res.data.avatar_url,
-    userUrl: res.data.html_url,
-    userLocation: res.data.location,
-    userBlog: res.data.blog,
-    userBio: res.data.bio,
-    userRepos: res.data.public_repos,
-    userFollowers: res.data.followers,
-    userStarredRepos: res.data.starred_url,
-    userFollowing: res.data.following
-  };
-  return dataObject;
-};
+// getData = res => {
+//   // Set variables in an object here
+//   const dataObject = {
+//     name: res.data.name,
+//     userPic: res.data.avatar_url,
+//     userUrl: res.data.html_url,
+//     userLocation: res.data.location,
+//     userBlog: res.data.blog,
+//     userBio: res.data.bio,
+//     userRepos: res.data.public_repos,
+//     userFollowers: res.data.followers,
+//     userStarredRepos: res.data.starred_url,
+//     userFollowing: res.data.following
+//   };
+//   return dataObject;
+// };
 
 function profilePhotoHead(res) {
   return `
@@ -106,5 +111,3 @@ async function getStars(username) {
     console.log(err);
   }
 }
-
-
