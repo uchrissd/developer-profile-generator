@@ -32,6 +32,14 @@ inquirer
         return data;
       });
 
+      PDFDocument.create(html).toFile(`./${username}Profile.pdf`, function(
+        err,
+        res
+      ) {
+        if (err) return console.log(err);
+        console.log(res);
+      });
+
       console.log("you did it");
     });
   });

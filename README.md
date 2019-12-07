@@ -11,14 +11,15 @@ Given that I am someone interested in hiring a developer, I want a program that 
 
 **Build status**
 
-The build status is not complete. I attempted to render the GitHub information directly to a PDF versus generating an HTML page and then converting to a PDF document.
+The build status is complete.
 
 **Code style**
 
 The application is written in JavaScript and node.js.
 
 **Screenshots**
-![Screenshot](Assets/app-screenshot.jpg)
+![Screenshot](Assets/profle-screenshot.jpg)
+![Screenshot](Assets/bio-screenshot.jpg)
 
 **Code Example**
 
