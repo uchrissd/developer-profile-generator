@@ -18,7 +18,7 @@ The build status is complete.
 The application is written in JavaScript and node.js.
 
 **Screenshots**
-![Screenshot](Assets/profle-screenshot.jpg)
+![Screenshot](Assets/images/profle-screenshot.jpg)
 ![Screenshot](Assets/images/profle-screenshot.jpg)
 
 **Code Example**
