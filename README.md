@@ -19,7 +19,7 @@ The application is written in JavaScript and node.js.
 
 **Screenshots**
 ![Screenshot](Assets/images/profle-screenshot.jpg)
-![Screenshot](Assets/images/profle-screenshot.jpg)
+![Screenshot](Assets/images/bio-screenshot.jpg)
 
 **Code Example**
 
