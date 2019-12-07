@@ -18,8 +18,8 @@ The build status is complete.
 The application is written in JavaScript and node.js.
 
 **Screenshots**
-![Screenshot](./profle-screenshot.jpg)
-![Screenshot](./bio-screenshot.jpg)
+![Screenshot](Assets\profle-screenshot.jpg)
+![Screenshot](Assets\profle-screenshot.jpg)
 
 **Code Example**
 
@@ -28,4 +28,4 @@ The application is written in JavaScript and node.js.
 
 **Installation**
 
-Project is hosted here: https://uchrissd.github.io/city-scout/
+No installation necessary.
