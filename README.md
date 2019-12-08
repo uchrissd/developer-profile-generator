@@ -66,4 +66,4 @@ inquirer
 
 **Installation**
 
-No installation necessary.
+No installation necessary. Project can be viewed here: https://github.com/uchrissd/developer-profile-generator
