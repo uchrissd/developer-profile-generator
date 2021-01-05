@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "generate-html": "^1.0.1",
     "inquirer": "^7.0.0",
     "pdfkit": "^0.10.0",
